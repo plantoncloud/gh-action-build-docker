@@ -1,0 +1,32 @@
+name: Build & Push Docker Image
+description: 'Builds and Pushed a Docker Image to Docker Repo on Planton Cloud Artifact-Store'
+
+inputs:
+  artifact_store_id:
+    description: 'id of the artifact-store on planton-cloud'
+    required: true
+  artifact_store_docker_repo_hostname:
+    description: 'hostname of the docker repository in the artifact-store on planton-cloud'
+    required: true
+  container_image_name:
+    description: 'name of the docker image to be used for tagging and publishing the image'
+    required: true
+
+runs:
+  using: 'bash'
+  run: |
+    export artifact_writer_key_json_file=artifact-writer-key.json
+    echo "logging into planton cloud service using client credentials"
+    planton auth machine login --client-id $PLANTON_CLOUD_SERVICE_CLIENT_ID --client-secret $PLANTON_CLOUD_SERVICE_CLIENT_SECRET
+    echo "logged into planton cloud service using client credentials"
+    echo "fetching artifact writer key from planton cloud service"
+    planton product artifact-store secrets get-writer-key --output-file ${artifact_writer_key_json_file} --artifact-store-id $artifact_store_id
+    echo "fetched artifact writer key from planton cloud service"
+    docker login -u _json_key -p "$(cat $artifact_writer_key_json_file)" https://$artifact_store_docker_repo_hostname
+    echo "building container image"
+    export CONTAINER_IMAGE_REFERENCE=$container_image_name:$GITHUB_SHA
+    docker build -t $CONTAINER_IMAGE_REFERENCE .
+    echo "built container image"
+    echo "pushing container image"
+    docker push $CONTAINER_IMAGE_REFERENCE
+
