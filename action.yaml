@@ -12,10 +12,10 @@ inputs:
   planton_cloud_service_client_secret:
     description: 'client-secret of the planton cloud machine account to be used for generated api token for making api requests to planton cloud service.'
     required: true
-  artifact_store_id:
+  planton_cloud_artifact_store_id:
     description: 'id of the artifact-store on planton-cloud'
     required: true
-  artifact_store_docker_repo_hostname:
+  planton_cloud_artifact_store_docker_repo_hostname:
     description: 'hostname of the docker repository in the artifact-store on planton-cloud'
     required: true
   container_image_name:
@@ -32,7 +32,7 @@ runs:
     - ${{ inputs.planton_cloud_cli_env }}
     - ${{ inputs.planton_cloud_service_client_id }}
     - ${{ inputs.planton_cloud_service_client_secret }}
-    - ${{ inputs.artifact_store_id }}
-    - ${{ inputs.artifact_store_docker_repo_hostname }}
+    - ${{ inputs.planton_cloud_artifact_store_id }}
+    - ${{ inputs.planton_cloud_artifact_store_docker_repo_hostname }}
     - ${{ inputs.container_image_name }}
     - ${{ inputs.container_image_version }}
