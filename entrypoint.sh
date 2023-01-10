@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -10,6 +10,15 @@ export PLANTON_CLOUD_ARTIFACT_STORE_ID=${4}
 export ARTIFACT_STORE_DOCKER_REPO_HOSTNAME=${5}
 export CONTAINER_IMAGE_NAME=${6}
 export CONTAINER_IMAGE_VERSION=${7}
+
+if ! [ -n "${PLANTON_CLOUD_SERVICE_CLIENT_ID}" ]; then
+    echo "PLANTON_CLOUD_SERVICE_CLIENT_ID is not set. Configure Machine Account Credentials for Repository or Organization."
+    exit 1
+fi
+if ! [ -n "${PLANTON_CLOUD_SERVICE_CLIENT_SECRET}" ]; then
+    echo "PLANTON_CLOUD_SERVICE_CLIENT_SECRET is not set. Configure Machine Account Credentials for Repository or Organization."
+    exit 1
+fi
 
 export artifact_writer_key_json_file=artifact-writer-key.json
 echo "logging into planton cloud service using client credentials"
