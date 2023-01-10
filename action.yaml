@@ -1,0 +1,38 @@
+name: Build & Push Docker Image
+description: 'Builds and Pushed a Docker Image to Docker Repo on Planton Cloud Artifact-Store'
+
+inputs:
+  planton_cloud_service_cli_env:
+    description: 'name of the planton cloud cli environment live or test'
+    required: false
+    default: 'live'
+  planton_cloud_service_client_id:
+    description: 'client-id of the planton cloud machine account to be used for generated api token for making api requests to planton cloud service.'
+    required: true
+  planton_cloud_service_client_secret:
+    description: 'client-secret of the planton cloud machine account to be used for generated api token for making api requests to planton cloud service.'
+    required: true
+  artifact_store_id:
+    description: 'id of the artifact-store on planton-cloud'
+    required: true
+  artifact_store_docker_repo_hostname:
+    description: 'hostname of the docker repository in the artifact-store on planton-cloud'
+    required: true
+  container_image_name:
+    description: 'name of the docker image to be used for tagging and publishing the image'
+    required: true
+  container_image_version:
+    description: 'version(commit-short-shar or tag) of the docker image to be used for tagging and publishing the image'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.planton_cloud_cli_env }}
+    - ${{ inputs.planton_cloud_service_client_id }}
+    - ${{ inputs.planton_cloud_service_client_secret }}
+    - ${{ inputs.artifact_store_id }}
+    - ${{ inputs.artifact_store_docker_repo_hostname }}
+    - ${{ inputs.container_image_name }}
+    - ${{ inputs.container_image_version }}
