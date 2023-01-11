@@ -1,2 +1,3 @@
-# github-actions
-A Collection of GitHub Actions used in Planton Cloud Magic Pipelines
+# Planton Cloud Docker Build GitHub Action
+
+GitHub Action to build and publish docker images to Artifact Store on Planton Cloud
